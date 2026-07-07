@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file=$(jq -r '.tool_input.file_path // empty' 2>/dev/null); if echo \"$file\" | grep -qE '\\.(py|html)$'; then echo '{\"hookSpecificOutput\": {\"hookEventName\": \"PostToolUse\", \"additionalContext\": \"CLAUDE.md may need updating — if this change affects project structure, a new module, a design decision, or how the pipeline works, update CLAUDE.md now.\"}}'; fi"
+          }
+        ]
+      }
+    ]
+  }
+}

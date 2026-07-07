@@ -1,0 +1,95 @@
+{
+  "engine": "elevenlabs",
+  "stt_seconds": 22.33,
+  "llm_seconds": 9.81,
+  "transcript": "जी doctor, तो मुझे-- मैं आपके पास आया हूँ, आपके clinic में। जी। ठीक है। तो सबसे पहले मुझे बताइए आज आप किस परेशानी के लिए आए हैं? आपको क्या symptoms महसूस हो रहे हैं और कब से? Doctor, कल मैंने एक party में मेरा एक attend-- मतलब मैं गया था। So yes, मुझे मतलब ये कल party का ये scene था कि मैंने कुछ चटपटा खाया था। जैसे कि pasta खाया था मैंने और कुछ junk food जैसे कि naan और spaghetti वो सब खाया था। तो थोड़ा मुझे आज पेट में गुड़गुड़ हो रहा है and आज मेरा toilet भी अच्छे से नहीं हुआ था। ठीक है, मुझे समझ आ रहा है। यानी आपको पेट में थोड़ा upset लग रहा है और toilet भी ठीक से नहीं हुआ। चलिए मैं आगे पूछता हूँ। क्या आपको अभी कोई बुखार या उल्टी जैसा भी लग रहा है या सिर्फ पेट की ही दिक्कत है? मुझे उल्टी भी आ रही थी। मैंने-- मैं उल्टी करके घर से आया हूँ and वो उल्टी around yellow color की होगी पर उसमें food particles भी present हैं। समझ गया। यानी आपको उल्टी भी हुई और पेट में जलन या upset है। अब मैं आपका blood pressure, pulse और कोई भी vitals check करूंगा। अगर आपके पास अभी कोई vitals जैसे BP, pulse या temperature है तो बता दीजिए। BP अभी मेरा मैं दिख रहा है कि-- दिखा रहा है कि 127/96 है and pulse भी उसके साथ दिखा रहा है 100 beats per minute. और कोई vital या tool check करूं? यह काफी जानकारी हो गई। आपके BP और pulse मैंने note कर लिए। Temperature अगर बाद में ले तो हम update कर लेंगे। अब मैं आपकी शिकायत के हिसाब से कुछ test suggest करूंगा। आपको ठीक लगे तो बता- मुझे अभी temperature मैं देख रहा हूँ। Temperature मुझे दिखा रहा है 100 degree Fahrenheit. ठीक है। तो मैं आपका temperature 100 degree Fahrenheit note कर लेता हूँ। अब हम आगे बढ़ते हैं। मैं एक basic blood test जैसे कि CBC और अगर जरूरत लगे तो stool test भी suggest करूंगा। इसके अलावा मैं आपको हल्की दवा लिखूंगा ताकि आपका पेट आराम में रहे। Doctor, दवा के बाद करने से पहले ये जो stool test करना है इसके लिए कौन-कौन से parameter मुझे रखने पड़ेंगे अपने mind में? Stool test में हम आमतौर पर infection के लिए check करते हैं। जैसे bacteria या parasite। आपको बस sample देना होता है। बाकी lab check करती है। मैं बाद में detail prescription में लिख दूंगा। अब मैं आपको हल्की दवा बताऊं। जी, बताइए मुझे। मैं आपको एक हल्की antacid और oral rehydration solution suggest करूंगा। साथ ही अगर कोई infection लगेगा तो हम एक हल्का antibiotic भी देख सकते हैं। लेकिन पहले test के result देख लेंगे। क्या यह plan ठीक लगेगा? जी, test के result अभी मैं देख पा रहा हूँ। Test के results ये बता रहे हैं कि मुझे infection high है and आप उस हिसाब से समझ लीजिए। Stool test में infection high है और आप जरा parameters भी read out कर लीजिए मेरे लिए please। चलिए मैं मान लेता हूँ कि stool test में infection आया है। इसका मतलब हम एक antibiotic को शामिल करेंगे जो मैं prescribe करूंगा। इसके साथ-साथ आप hydrated रहें और हल्का खाना लें। हम कुछ दिनों बाद follow-up करेंगे। अब अगर कोई और सवाल नहीं तो मैं इसे finalize कर दूं। Follow-up का दिन। Follow-up के दिन में doctor मुझे अभी भी थोड़ा पेट में upset लग रहा है। आप मेरे लिए कृपया मेरे stool test का result पढ़ लेंगी? जरूर। मैं आपका stool test result देख लेता हूँ। हम इस follow-up में आपकी दवा को adjust करेंगे और पेट की समस्या पूरी तरह ठीक करने का plan बनाएंगे। तो चलिए test और आपके लक्षण के हिसाब से हम आगे की दवाई तय करते हैं। जी, आप मुझे कुछ medications के नाम बता दीजिए। ठीक है। आपकी report और अभी के लक्षण देखकर मैं हल्का antibiotic continue करूंगा। पेट के लिए probiotic लिखूंगा और एक antacid भी ताकि- Antibiotic का नाम बता दीजिए please और antacid का रोज का। मैं उदाहरण के लिए कहूंगा जैसे antibiotic Ofloxacin 200 mg दिन में दो बार, पांच दिन के लिए। Antacid Pantoprazole 40 mg रोज सुबह खाली पेट। लेकिन याद रखिए यह केवल उदाहरण है। किसी भी असली दवा लिख-",
+  "prescription": {
+    "vitals": {
+      "bp_systolic_mmhg": 127,
+      "bp_diastolic_mmhg": 96,
+      "pulse_bpm": 100,
+      "weight_kg": null,
+      "height_cm": null,
+      "temperature_c": 37.8,
+      "bmi": null
+    },
+    "chief_complaints": [
+      {
+        "text": "Abdominal discomfort/gurgling after eating spicy and junk food at a party",
+        "entry_type": "free_text",
+        "code": null
+      },
+      {
+        "text": "Improper bowel movement",
+        "entry_type": "free_text",
+        "code": null
+      },
+      {
+        "text": "Vomiting, yellow colored with food particles",
+        "entry_type": "free_text",
+        "code": null
+      }
+    ],
+    "diagnoses": [
+      {
+        "text": "Gastrointestinal infection (suspected, based on stool test indicating high infection)",
+        "entry_type": "free_text",
+        "code": null
+      }
+    ],
+    "medications": [
+      {
+        "text": "Ofloxacin 200 mg",
+        "entry_type": "free_text",
+        "dosage": {
+          "frequency_code": "BID",
+          "dose_pattern": "1-0-1",
+          "timing": null,
+          "duration_days": 5,
+          "route": "oral"
+        }
+      },
+      {
+        "text": "Pantoprazole 40 mg",
+        "entry_type": "free_text",
+        "dosage": {
+          "frequency_code": "OD",
+          "dose_pattern": "1-0-0",
+          "timing": "before_food",
+          "duration_days": null,
+          "route": "oral"
+        }
+      },
+      {
+        "text": "Probiotic",
+        "entry_type": "free_text",
+        "dosage": null
+      },
+      {
+        "text": "Oral Rehydration Solution (ORS)",
+        "entry_type": "free_text",
+        "dosage": null
+      }
+    ],
+    "advice": "Stay well hydrated, take light diet, avoid spicy and junk food. Follow-up to adjust medication as needed.",
+    "investigations": [
+      {
+        "text": "CBC (Complete Blood Count)",
+        "entry_type": "free_text",
+        "is_panel": true,
+        "fasting_required": false
+      },
+      {
+        "text": "Stool test for infection (bacteria/parasite)",
+        "entry_type": "free_text",
+        "is_panel": false,
+        "fasting_required": false
+      }
+    ],
+    "follow_up": {
+      "date": null,
+      "reason": "Review stool test results and adjust medication; ongoing abdominal upset"
+    },
+    "vaccine_checklist": []
+  }
+}

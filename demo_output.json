@@ -1,0 +1,150 @@
+{
+    "schema_version": "0.1",
+    "prescription_id": "rx_9f2a7c4e",        // stable UUID
+    "status": "finalized",                   // draft | finalized | amended | cancelled
+    "version": 1,                            // bumps on amend; see `amends` below
+    "amends": null,                          // prescription_id this supersedes, if an edit-after-issue
+
+    // --- WHO / WHERE: live foreign keys for joins (per entity-model research) ---
+    "refs": {
+      "account_id": "acc_forlife_demo",
+      "clinic_id": "cli_greenpark",
+      "practitioner_id": "prac_sutopa",
+      "practitioner_role_id": "role_sutopa_greenpark",  // doctor × clinic
+      "patient_id": "pat_priya_s",
+      "consult_id": "con_20260603_1142"      // links to the consult/ambient session, nullable
+    },
+
+    // --- SNAPSHOTS: frozen at finalization. A legal document must reprint years
+    // later showing what was actually issued, even if letterhead/profile later change ---
+    "issued_at": "2026-06-03T11:58:00+05:30",
+    "prescriber_snapshot": {
+      "name": "Dr Sutopa Banerjee",
+      "qualifications": "MBBS, MD (Internal Medicine)",
+      "registration_no": "WBMC-58213",
+      "clinic_name": "Green Park Clinic",
+      "clinic_address": "12 Southern Ave, Kolkata 700029"
+    },
+    "patient_snapshot": {
+      "name": "Priya Sharma",
+      "age_years": 42,
+      "sex": "F",
+      "phone": "+9198XXXXXX21",
+      "abha_address": null                   // optional ABDM id; null until captured
+    },
+
+    // --- SECTIONS: same order as the canvas (vitals → … → follow-up) ---
+    "vitals": {                              // any field null = not taken this visit
+      "bp_systolic_mmhg": 128,
+      "bp_diastolic_mmhg": 84,
+      "pulse_bpm": 78,
+      "weight_kg": 71.5,
+      "height_cm": 162,
+      "temperature_c": 37.0,
+      "bmi": 27.2                            // auto-calculated, derived
+    },
+
+    "chief_complaints": [
+      { "text": "Increased thirst, 2 weeks", "entry_type": "free_text", "code": null },
+      { "text": "Fatigue", "entry_type": "coded",
+        "code": { "system": "SNOMED-CT", "code": "84229001", "display": "Fatigue" } }
+    ],
+
+    "diagnoses": [
+      { "text": "Type 2 Diabetes Mellitus", "entry_type": "coded",
+        "code": { "system": "ICD-11", "code": "5A11", "display": "Type 2 diabetes mellitus" } }
+    ],
+
+    "medications": [
+      {
+        "text": "Metformin 500mg — 1-0-1, after food, 30 days",   // exact render string (print + WhatsApp)
+        "entry_type": "coded",
+        "drug": {                            // resolved from the drug master (decoupled from display)
+          "brand": "Glycomet 500",
+          "molecules": [{ "name": "Metformin", "strength_value": 500, "strength_unit": "mg" }],
+          "form": "Tablet",
+          "manufacturer": "USV"
+        },
+        "code": { "cdci": null, "snomed": null },   // ABDM drug codes, deferred → null
+        "dosage": {
+          "frequency_code": "BD",            // OD|BD|TDS|QID|HS|SOS|STAT
+          "dose_pattern": "1-0-1",           // morning-noon-night (Indian convention), optional
+          "timing": "after_food",            // before_food|after_food|with_food|empty_stomach|null
+          "duration_days": 30,
+          "route": "PO"                      // PO|IV|IM|SC|topical|...
+        },
+        "forlife_executable": false,
+        "opportunity_id": null,
+        "vaccine_schedule": null
+      },
+      {
+        "text": "Syp. Crocin 5ml TDS x 3d",  // free-text: doctor wrote the whole line longhand
+        "entry_type": "free_text",
+        "drug": null, "code": null, "dosage": null,
+        "forlife_executable": false,
+        "flagged_for_ops_review": false,     // true if a ForLife item is suspected in free text
+        "opportunity_id": null, "vaccine_schedule": null
+      },
+      {
+        "text": "HPV vaccine (Gardasil 9) — dose 1 of 3",
+        "entry_type": "coded",
+        "drug": { "brand": "Gardasil 9", "molecules": [{ "name": "HPV 9-valent vaccine" }],
+                  "form": "Injection", "manufacturer": "MSD" },
+        "code": { "cdci": null, "snomed": null },
+        "dosage": { "route": "IM", "duration_days": null,
+                    "frequency_code": null, "dose_pattern": null, "timing": null },
+        "forlife_executable": true,          // green-edge item → fires an opportunity silently
+        "opportunity_id": "opp_hpv_priya_01",
+        "vaccine_schedule": [                 // auto-scheduled multi-dose, editable
+          { "dose_number": 1, "scheduled_date": "2026-06-03" },
+          { "dose_number": 2, "scheduled_date": "2026-07-25" },
+          { "dose_number": 3, "scheduled_date": "2026-11-25" }
+        ]
+      }
+    ],
+
+    "advice": "Reduce refined carbs. 30-min walk daily. Monitor fasting sugar twice weekly.",  // free text
+
+    "investigations": [
+      {
+        "text": "Lipid Profile",
+        "entry_type": "coded",
+        "code": { "system": "LOINC", "code": "57698-3", "display": "Lipid panel" },
+        "is_panel": true,
+        "components": [                       // panel → members modelled from the start
+          { "name": "Total Cholesterol", "loinc": "2093-3" },
+          { "name": "HDL", "loinc": "2085-9" },
+          { "name": "LDL", "loinc": "13457-7" },
+          { "name": "Triglycerides", "loinc": "2571-8" }
+        ],
+        "fasting_required": true,
+        "forlife_executable": true,
+        "opportunity_id": "opp_lipid_priya_01"
+      },
+      {
+        "text": "HbA1c", "entry_type": "coded",
+        "code": { "system": "LOINC", "code": "4548-4", "display": "Hemoglobin A1c" },
+        "is_panel": false, "components": [], "fasting_required": false,
+        "forlife_executable": true, "opportunity_id": "opp_hba1c_priya_01"
+      }
+    ],
+
+    "follow_up": {
+      "date": "2026-07-03",
+      "reason": "Review labs + titrate metformin",
+      "auto_scheduled": false               // true when ForLife items already created their own follow-ups
+    },
+
+    // Vaccines DISCUSSED but not prescribed today (the bottom-of-canvas checklist).
+    // Distinct from a vaccine prescribed as a medication line above.
+    "vaccine_checklist": [
+      { "vaccine": "Shingles", "flagged": false, "eligibility_note": "50+ yrs" },
+      { "vaccine": "Influenza", "flagged": true, "eligibility_note": "seasonal" }
+    ],
+
+    // How this Rx left the building (the WhatsApp version is the primary output)
+    "outputs": [
+      { "channel": "whatsapp", "sent_at": "2026-06-03T11:59:10+05:30" },
+      { "channel": "print", "sent_at": null }
+    ]
+  }

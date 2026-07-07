@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClinicOS Live</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f4f6f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 { font-size: 1.4rem; color: #333; margin-bottom: 32px; letter-spacing: 0.5px; }
+
+    #record-btn {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: none;
+      background: #e74c3c;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(231,76,60,0.4);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    #record-btn:hover { transform: scale(1.05); }
+
+    #record-btn.recording {
+      background: #2ecc71;
+      box-shadow: 0 4px 20px rgba(46,204,113,0.4);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 4px 20px rgba(46,204,113,0.4); }
+      50%       { box-shadow: 0 4px 32px rgba(46,204,113,0.8); }
+    }
+
+    .btn-icon  { font-size: 2rem; }
+    .btn-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+
+    #status {
+      margin: 16px 0 32px;
+      font-size: 0.85rem;
+      color: #888;
+      height: 20px;
+    }
+
+    .panels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .panel h2 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+    }
+
+    /* list items */
+    .panel ul { list-style: none; padding: 0; flex: 1; }
+
+    .panel ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .panel ul li:last-child { border-bottom: none; }
+
+    .bullet { color: #e74c3c; font-weight: bold; flex-shrink: 0; padding-top: 7px; }
+
+    /* editable item text */
+    .item-text {
+      flex: 1;
+      padding: 6px 4px;
+      font-size: 0.95rem;
+      color: #333;
+      outline: none;
+      border-radius: 4px;
+      min-height: 32px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .item-text:focus {
+      background: #f0f7ff;
+      box-shadow: inset 0 0 0 1px #90c0f0;
+    }
+
+    /* delete button on each item */
+    .del-btn {
+      background: none;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 6px 2px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .del-btn:hover { color: #e74c3c; }
+
+    /* add item row */
+    .add-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .add-input {
+      flex: 1;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      outline: none;
+      color: #333;
+    }
+    .add-input:focus { border-color: #90c0f0; }
+    .add-input::placeholder { color: #bbb; }
+
+    .add-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .add-btn:hover { background: #c0392b; }
+
+    /* advice textarea */
+    .advice-area {
+      flex: 1;
+      width: 100%;
+      border: none;
+      outline: none;
+      resize: none;
+      font-size: 0.95rem;
+      color: #333;
+      line-height: 1.6;
+      font-family: inherit;
+      background: transparent;
+      min-height: 100px;
+    }
+    .advice-area:focus { background: #f0f7ff; border-radius: 6px; padding: 4px; }
+    .advice-area::placeholder { color: #bbb; font-style: italic; }
+
+    /* expand / collapse */
+    .expand-btn {
+      background: none;
+      border: none;
+      color: #3498db;
+      font-size: 0.8rem;
+      cursor: pointer;
+      padding: 0;
+      white-space: nowrap;
+    }
+    .expand-btn:hover { text-decoration: underline; }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <h1>ClinicOS Live Scribe</h1>
+
+  <button id="record-btn" onclick="toggleRecording()">
+    <span class="btn-icon">⏺</span>
+    <span class="btn-label" id="btn-text">Press to Record</span>
+  </button>
+
+  <div id="status">Idle</div>
+
+  <div class="panels">
+
+    <!-- Chief Complaints -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Chief Complaints</h2>
+        <button class="expand-btn hidden" id="complaints-expand" onclick="toggleExpand('complaints')">Show all</button>
+      </div>
+      <ul id="complaints-list"></ul>
+      <div class="add-row">
+        <input class="add-input" id="complaints-input" placeholder="Add complaint..." onkeydown="addOnEnter(event,'complaints')" />
+        <button class="add-btn" onclick="addItem('complaints')">+</button>
+      </div>
+    </div>
+
+    <!-- Diagnoses -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Diagnoses</h2>
+        <button class="expand-btn hidden" id="diagnoses-expand" onclick="toggleExpand('diagnoses')">Show all</button>
+      </div>
+      <ul id="diagnoses-list"></ul>
+      <div class="add-row">
+        <input class="add-input" id="diagnoses-input" placeholder="Add diagnosis..." onkeydown="addOnEnter(event,'diagnoses')" />
+        <button class="add-btn" onclick="addItem('diagnoses')">+</button>
+      </div>
+    </div>
+
+    <!-- Advice -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Advice</h2>
+      </div>
+      <textarea class="advice-area" id="advice" placeholder="Advice will appear here..."></textarea>
+    </div>
+
+  </div>
+
+  <script>
+    const PREVIEW = 2;   // items shown before "Show all"
+    let recording = false;
+    let evtSource = null;
+
+    // { complaints: [{text},...], diagnoses: [{text},...] }
+    let store = { complaints: [], diagnoses: [] };
+    let expanded = { complaints: false, diagnoses: false };
+
+    /* ── Recording ─────────────────────────────────────────── */
+    async function toggleRecording() {
+      if (!recording) {
+        await fetch('/start', { method: 'POST' });
+        recording = true;
+        document.getElementById('record-btn').classList.add('recording');
+        document.getElementById('btn-text').textContent = 'Stop';
+        document.getElementById('record-btn').querySelector('.btn-icon').textContent = '⏹';
+        document.getElementById('status').textContent = 'Recording — first update in ~15s';
+
+        evtSource = new EventSource('/stream');
+        evtSource.onmessage = (e) => updatePanels(JSON.parse(e.data));
+      } else {
+        await fetch('/stop', { method: 'POST' });
+        recording = false;
+        document.getElementById('record-btn').classList.remove('recording');
+        document.getElementById('btn-text').textContent = 'Press to Record';
+        document.getElementById('record-btn').querySelector('.btn-icon').textContent = '⏺';
+        document.getElementById('status').textContent = 'Stopped';
+        if (evtSource) { evtSource.close(); evtSource = null; }
+      }
+    }
+
+    /* ── SSE update ─────────────────────────────────────────── */
+    function updatePanels(data) {
+      if (data.chief_complaints) {
+        store.complaints = data.chief_complaints;
+        renderList('complaints');
+      }
+      if (data.diagnoses) {
+        store.diagnoses = data.diagnoses;
+        renderList('diagnoses');
+      }
+      if (data.advice) {
+        document.getElementById('advice').value = data.advice;
+      }
+      document.getElementById('status').textContent =
+        `Last updated — ${new Date().toLocaleTimeString()}`;
+    }
+
+    /* ── Render a list (with preview / expand) ──────────────── */
+    function renderList(key) {
+      const items = store[key];
+      const ul = document.getElementById(`${key}-list`);
+      const expandBtn = document.getElementById(`${key}-expand`);
+      const isExpanded = expanded[key];
+      const visible = isExpanded ? items : items.slice(0, PREVIEW);
+      const hidden  = items.length - PREVIEW;
+
+      ul.innerHTML = '';
+      visible.forEach((item, idx) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span class="bullet">•</span>
+          <span class="item-text" contenteditable="true"
+                onblur="saveEdit('${key}', ${idx}, this.textContent)">${item.text}</span>
+          <button class="del-btn" onclick="deleteItem('${key}', ${idx})">×</button>`;
+        ul.appendChild(li);
+      });
+
+      if (items.length > PREVIEW) {
+        expandBtn.classList.remove('hidden');
+        expandBtn.textContent = isExpanded ? 'Show less' : `Show all (${hidden} more)`;
+      } else {
+        expandBtn.classList.add('hidden');
+      }
+    }
+
+    function toggleExpand(key) {
+      expanded[key] = !expanded[key];
+      renderList(key);
+    }
+
+    /* ── Editable items ─────────────────────────────────────── */
+    function saveEdit(key, idx, newText) {
+      store[key][idx].text = newText.trim();
+    }
+
+    function deleteItem(key, idx) {
+      store[key].splice(idx, 1);
+      renderList(key);
+    }
+
+    function addItem(key) {
+      const input = document.getElementById(`${key}-input`);
+      const text = input.value.trim();
+      if (!text) return;
+      store[key].push({ text, entry_type: 'free_text', code: null });
+      input.value = '';
+      expanded[key] = true;
+      renderList(key);
+    }
+
+    function addOnEnter(e, key) {
+      if (e.key === 'Enter') { e.preventDefault(); addItem(key); }
+    }
+  </script>
+
+</body>
+</html>
