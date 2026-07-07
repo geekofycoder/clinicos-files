@@ -84,6 +84,43 @@ Drug names and dosage units to bias the ASR live in `DRUG_KEYTERMS` at the top
 of `transcribe_all.py` / `pipeline.py` — edit to match what your consults
 actually say.
 
+## Sample: transcript → extraction
+
+Real consult transcripts aren't checked into this repo (patient data), but
+here's a synthetic excerpt showing the shape of what `transcribe_all.py`
+produces and what `llm/extractor.py` turns it into:
+
+**Transcript chunk (Hinglish, as spoken):**
+```
+Doctor, mujhe do din se bukhar hai aur gale mein bahut dard hai.
+Khana nigalne mein bhi problem ho rahi hai.
+```
+
+**Extracted `Prescription` (partial):**
+```json
+{
+  "chief_complaints": [
+    { "text": "Fever for 2 days", "entry_type": "free_text", "code": null },
+    { "text": "Sore throat with pain on swallowing", "entry_type": "free_text", "code": null }
+  ],
+  "diagnoses": [
+    { "text": "Suspected pharyngitis", "entry_type": "free_text", "code": null }
+  ],
+  "medications": [
+    {
+      "text": "Paracetamol 500 mg",
+      "entry_type": "free_text",
+      "dosage": { "frequency_code": "TDS", "dose_pattern": "1-1-1", "timing": null, "duration_days": 3, "route": "oral" }
+    }
+  ],
+  "advice": "Warm fluids, rest, follow up if fever persists beyond 3 days."
+}
+```
+
+This is the shape phase 1's batch extraction produces in one shot, and the
+same shape phase 2's `live/incremental.py` builds up field-by-field, chunk by
+chunk, over the course of a live consult.
+
 ## Engines and their quirks
 
 | Engine | Model | Long audio | Keyterm boost | Hinglish | Diarization |
